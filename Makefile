@@ -1,7 +1,7 @@
 MD=markdown
 PDF=pdf
 
-all: introduction processes threads pthreads thread_design thread_performance scheduling
+all: introduction processes threads pthreads thread_design thread_performance scheduling memory_management
 
 clean:
 	rm -f *~
@@ -28,3 +28,6 @@ thread_performance: $(MD)/thread_performance_considerations.md
 
 scheduling: $(MD)/scheduling.md
 	pandoc -V geometry:margin=1in -o $(PDF)/scheduling.pdf $(MD)/scheduling.md
+
+memory_management: $(MD)/memory_management.md
+	pandoc -V geometry:margin=1in -o $(PDF)/memory_management.pdf $(MD)/memory_management.md

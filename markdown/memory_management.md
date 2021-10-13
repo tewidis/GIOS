@@ -183,3 +183,110 @@ Page Size
     * 12-bit offset -> 4kB page size
     * Systems generally support different page sizes
         + Linux/x86 - 4kB, 2MB, 1GB
+        + Solaris/SPARC - 8kB, 4MB, 2GB
+    * Larger pages:
+        + Pros: Fewer page table entries, smaller page tables, more TLB hits
+        + Cons: Page size -> internal fragmentation, wastes memory
+
+|             |  large  |   huge   |
+|-------------|--------:|---------:|
+| page size   |  2 MB   |   1 GB   |
+| offset bits | 21 bits | 30 bits  |
+| Reduction   |  x512   |  x1024   |
+
+Memory Allocation
+
+    * Memory allocator: Determines VA to PA mapping
+        + Address translation, page tables, etc. used to simply determine PA 
+        from VA and check validity/permissions
+    * Kernel-level allocators
+        + Kernel state, static process state
+    * User-level allocators
+        + Dynamic process state (heap); malloc/free
+
+Linux Kernel Allocators
+
+    * A memory allocator must limit fragmentation and permit the coalescing and
+    aggregation of adjacent free areas
+    * Buddy Allocator: Start with a 2^x area
+        + On request: Subdivide into 2^x chunks and find smallest 2^x chunk that
+        can satisfy the request
+        + On free: Check buddy to see if you can aggregate into a larger chunk
+            - Aggregate more up the tree
+            - Power of 2 means addresses only differ by 1 bit
+        + Pros: Aggregation works well and fast
+        + Cons: Some fragmentation still exists
+    * Slab Allocator: Caches for common object types/sizes, on top of contiguous
+    memory
+        + Slab: Continuous allocated physical memory
+        + Cache based on size of object (i.e., task struct)
+            - If a cache has space, add an object to it
+            - Else, allocate more pages to make space (this is within a page)
+        + Pros: Avoids internal and external fragmentation
+
+Demand Paging
+
+    * Virtual memory >> Physical memory
+        + Virtual memory page not always in physical memory
+        + Physical page frame saved and restored to/from secondary storage
+        + This is referred to as demand paging (swapping pages in/out of memory
+        and a swap partition (on disk))
+    * If the page is not present (present bit ==  0 in page table), trigger a 
+    page fault
+        + Operating system will go to disk, retrieve the page, and swap it into
+        physical memory in a free frame
+        + Then, reset the page table and restart the instruction
+    * Can "pin" a page, meaning constantly present in memory (disable swapping)
+
+Page Replacement (Freeing Physical Memory)
+
+    * When should pages be swapped out? Page(out) daemon should run when...
+        + Memory usage is above threshold (high watermark)
+        + CPU usage is below threshold (low watermark)
+    * Which pages should be swapped out?
+        + Pages that won't be used; history-based prediction
+        + Least-recently Used (LRU policy) uses access bit to track if a 
+        page is referenced
+        + Pages that don't need to be written out to disk (slow) - Can use 
+        the dirty bit to track modified pages
+        + Avoid non-swappable pages
+    * Parameters to tune thresholds for swapping in Linux
+        + Target page count
+        + Memory usage
+        + CPU usage
+    * Categorize pages into different types (claimable, swappable...)
+    * "Second chance" variation of LRU - Only swap if not used twice
+
+Copy on Write
+
+    * On process creation, the entire parent process address space is copied
+        + However, don't need to track multiple copies of static pages
+        + On create, map new VA to original page and write protection this page
+    * On write, page fault and make a copy
+        + Pays the cost of copying only if absolutely necessary
+
+Failure Management Checkpointing
+
+    * Checkpointing: Failure and recovery management technique
+        + Periodically save process state
+        + Failure may be unavoidable, but can restart from checkpoint so 
+        recovery is much faster
+    * Naive approach: Pause and copy
+    * Better approach: Write-protect entire address space and copy everything
+        + However, process will continue to execute, writing to pages
+        + Copy diffs of "dirtied" pages for incremental checkpoints
+        + Rebuild from multiple diffs, or in background
+    * Debugging (rewind-replay)
+        + Rewind: Restart from last checkpoint
+        + Replay: Run from there
+        + Gradually go back to older checkpoints until the error is found
+    * Migration
+        + Checkpoint the process to another machine and continue there
+        + Disaster recovery
+        + Consolidation (migrate load to as few machines as possible)
+        + Repeated checkpoints in a fast loop until pause-and-copy becomes 
+        acceptable (or unavoidable)
+    * The more frequently you checkpoint...
+        + The more state you will checkpoint (observe multiple writes)
+        + The higher the overheads of the checkpointing process
+        + The faster you will be able to recover from a fault
