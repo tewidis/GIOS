@@ -253,3 +253,66 @@ Hyperthreading
         + Memory load: Order of 100s of cycles
     * Hyperthreading can mask memory access latency
         
+Scheduling for Hyperthreading Platforms
+
+    * Assumptions:
+        1. Thread issues instruction on each cycle (max instruction/cycle=1)
+        2. Memory access takes 4 cycles
+        3. Hardware switching instantaneous
+        4. SMT with 2 hardware threads
+    * If we co-schedule CPU-bound threads, every other cycle is wasted as only
+    one thread can execute at a time; memory is also idle
+    * If we co-schedule I/O-bound threads, the CPU is idle, wasting cycles
+    * Mixing CPU- and I/O-bound threads... 
+        + Allows both the CPU and memory to be utilized
+        + Avoid/limit contention on processor pipeline
+        + Still some interference and degradation, but minimal
+
+CPU-Bound or Memory-Bound?
+
+    * Use historic information
+        + "Sleep time" won't work as the thread is not sleeping when waiting on
+        memory access
+        + Software takes too much time to compute
+        + Need hardware-level information
+    * Hardware counters
+        + L1, L2, ..., LLC misses
+        + IPC
+        + Power and energy data
+        + Used to estimate what kind of resources a thread needs
+    * Software interface and tools
+        + oprofile, Linux perf, ...
+    * Schedulers can make informed decisions using hardware counters
+        + Typically use multiple counters
+        + Models with per-architecture thresholds
+        + Based on well-understood workloads
+
+Scheduling with Hardware Counters
+
+    * Is cycles per instruction (CPI) useful?
+        + Memory bound -> High CPI
+        + CPU bound -> 1 (or low) CPI
+    * Computing 1/IPC requires software computation, so not acceptable
+        + Instead, simulation-based evaluation
+    * Testbed
+        + 4 cores x 4-way SMT
+        + Total of 16 hardware contexts
+    * Workload
+        + CPI of 1, 6, 11, 16
+        + 4 threads of each kind
+    * Metric is instructions per cycle
+        + Max IPC = 4
+
+CPI Experiment Results
+
+    * Mixed CPI -> processor pipeline well-utilized -> high IPC
+    * Same CPI -> Contention on some cores results in wasted cycles
+    * However, realistic workloads don't vary from 1-16
+        + 2-4 is much more realistic
+        + CPI isn't a particularly useful metric
+    * Takeaways
+        + Resource contention in SMTs for processor pipeline
+        + Hardware counters can be used to characterize workload
+        + Schedulers should be aware of resource contention, not just load 
+        balancing
+        + LLC usage would have been a better choice
