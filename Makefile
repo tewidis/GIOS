@@ -1,7 +1,7 @@
 MD=markdown
 PDF=pdf
 
-all: introduction processes threads pthreads thread_design thread_performance scheduling memory_management interprocess_communication
+all: introduction processes threads pthreads thread_design thread_performance scheduling memory_management interprocess_communication synchronization_constructs
 
 clean:
 	rm -f *~
@@ -34,3 +34,6 @@ memory_management: $(MD)/memory_management.md
 	
 interprocess_communication: $(MD)/inter-process_communication.md
 	pandoc -V geometry:margin=1in -o $(PDF)/inter-process_communication.pdf $(MD)/inter-process_communication.md
+
+synchronization_constructs: $(MD)/synchronization_constructs.md
+	pandoc -V geometry:margin=1in -o $(PDF)/synchronization_constructs.pdf $(MD)/synchronization_constructs.md
