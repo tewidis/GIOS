@@ -1,7 +1,7 @@
 MD=markdown
 PDF=pdf
 
-all: introduction processes threads pthreads thread_design thread_performance scheduling memory_management interprocess_communication synchronization_constructs io_management
+all: introduction processes threads pthreads thread_design thread_performance scheduling memory_management interprocess_communication synchronization_constructs io_management virtualization
 
 clean:
 	rm -f *~
@@ -40,3 +40,6 @@ synchronization_constructs: $(MD)/synchronization_constructs.md
 
 io_management: $(MD)/io_management.md
 	pandoc -V geometry:margin=1in -o $(PDF)/io_management.pdf $(MD)/io_management.md
+
+virtualization: $(MD)/virtualization.md
+	pandoc -V geometry:margin=1in -o $(PDF)/virtualization.pdf $(MD)/virtualization.md
