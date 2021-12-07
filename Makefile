@@ -1,7 +1,7 @@
 MD=markdown
 PDF=pdf
 
-all: introduction processes threads pthreads thread_design thread_performance scheduling memory_management interprocess_communication synchronization_constructs io_management virtualization remote_procedure_calls distributed_file_systems
+all: introduction processes threads pthreads thread_design thread_performance scheduling memory_management interprocess_communication synchronization_constructs io_management virtualization remote_procedure_calls distributed_file_systems distributed_shared_memory
 
 clean:
 	rm -f *~
@@ -49,3 +49,6 @@ remote_procedure_calls: $(MD)/remote_procedure_calls.md
 
 distributed_file_systems: $(MD)/distributed_file_systems.md
 	pandoc -V geometry:margin=1in -o $(PDF)/distributed_file_systems.pdf $(MD)/distributed_file_systems.md
+
+distributed_shared_memory: $(MD)/distributed_shared_memory.md
+	pandoc -V geometry:margin=1in -o $(PDF)/distributed_shared_memory.pdf $(MD)/distributed_shared_memory.md
