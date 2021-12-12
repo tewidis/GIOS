@@ -129,7 +129,7 @@ DSM Architecture
     * If MRMW...
         + Need local caches for performance (latency)
         + Home (or manager) node drives coherence operations
-        + All nodes response for part of distributed memory (state) management
+        + All nodes responsible for part of distributed memory (state) management
         + Each node contributes part of memory pages to DSM
         + Home node manages accesses and tracks page ownership
     * "Home" node
@@ -148,8 +148,8 @@ DSM Architecture
 
 Summarizing DSM Architecture
 
-    * Page-based OSM
-        + Each node contibutes part of memory pages to DSM
+    * Page-based DSM
+        + Each node contributes part of memory pages to DSM
         + Need local caches for performance (latency)
         + All nodes responsible for part of distributed memory
         + Home node manages accesses and tracks page ownership

@@ -130,7 +130,7 @@ Replication vs Partitioning
         + Con: Writes become more complex
             - Synchronously write to all
             - Or, write to one, then propagate to others
-        + Con: Replicas must be reconcilied (e.g., voting)
+        + Con: Replicas must be reconciled (e.g., voting)
     * Partitioning: Each machine has a subset of files
         + Pro: Availability vs single server DFS
         + Pro: Scalability with file system size

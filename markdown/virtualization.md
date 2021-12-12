@@ -35,8 +35,8 @@ Virtualization Models
     * Bare Metal/Hypervisor (type 1)
         + VMM (hypervisor) manages all hardware resources and supports execution
         of VMs
-        + Priveled, service VM to deal with devices (and other configuration and
-        management tasks)
+        + Priveleged, service VM to deal with devices (and other configuration 
+        and management tasks)
         + Xen (open source of Citrix XenServer)
             - VMs are referred to as domains
             - dom0 is priveleged domain
@@ -86,7 +86,7 @@ Processor Virtualization
         + For non-priveleged operations: Hardware speeds -> efficiency
         + For priveleged operations: Trap to hypervisor
         + Hypervisor determines what needs to be done
-            - If illegal oepration: Terminate VM
+            - If illegal operration: Terminate VM
             - If legal operation: Emulate the behavior the guest OS was 
             expecting from the hardware
     * Called trap-and-emulate; key component in achieving efficiency
@@ -96,7 +96,7 @@ x86 Virtualization in the Past
     * Problems with Trap-and-Emulate (x86 pre-2005)
         + 4 rings, no root/non-root modes yet
         + Hypervisor in ring0, guest OS in ring1
-        + 17 privelegd instructions do not trap! Fail silently!
+        + 17 priveleged instructions do not trap! Fail silently!
             - Interrupt enable/disable bit in priveleged register;
             POPF/PUSHF instructions that access it from ring1 fail silently
             - Hypervisor doesn't know, so it doesn't try to change settings

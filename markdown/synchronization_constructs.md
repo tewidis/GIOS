@@ -87,7 +87,7 @@ Other Synchronization Constructs
     synchronization behavior ("many reads or a single write")
     * Barriers: Opposite of semaphore; wait for n threads to arrive before 
     proceeding
-    * Rendevous points: Wait for multiple threads to reach a particular point
+    * Rendezvous points: Wait for multiple threads to reach a particular point
     * Optimistic wait-free sync: No conflict due to concurrent writes and safe
     to allow reads to proceed concurrently (read-copy-update (RCU))
     * All of these require hardware support for atomic access to a memory 
@@ -161,7 +161,7 @@ Cache Coherence
         + Cons: 
             - Takes much longer (must go to memory, no caching)
             - Generates coherence traffic regardless of change
-        + Aomtics and SMP
+        + Atomics and SMP
             - Expensive because of bus or interconnection (I/C) contention
             - Expensive because of cache bypass and coherence traffic
 
@@ -172,7 +172,7 @@ Spinlock Performance Metrics
     2. Reduce Waiting Time (delay)
         + "Time to stop spinning and acquire a lock that has been freed" - Also
         ideally immediately
-    3. Reduce Contention ("bus/network interconnection traffic)
+    3. Reduce Contention (bus/network interconnection traffic)
         + Ideally zero
 
 Test and Set Spinlock

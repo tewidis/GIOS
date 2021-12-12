@@ -123,16 +123,16 @@ Operating System Bypass
         + OS configures then gets out of the way
         + "User-level driver" (library)
     * OS still retains coarse-grained control
-    * Relies on device features (sufficient registers)
+    * Relies on device features
         + Sufficient registers
         + De-multiplex capability for different processes
         + Kernel typically performs these operations, so device must perform
 
-Synchronous vs Aynchronous Access
+Synchronous vs Asynchronous Access
 
     * Synchronous I/O operations
         + Process blocks
-    * Aynchronous I/O operations
+    * Asynchronous I/O operations
         + Process continues
         + Later...
             - Process checks and retrieves result
@@ -199,7 +199,7 @@ Extended Filesystem v2.0 (ext2)
         + Superblock: #inodes, #disk blocks, start of free blocks
         + Group descriptor: bitmaps, #free nodes, #directories
         + bitmaps: tracks free blocks and inodes
-        + indoes: 1 to max number, 1 per file
+        + inodes: 1 to max number, 1 per file
         + data blocks: file data
 
 | ![ext2](images/ext2.png) |

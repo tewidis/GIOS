@@ -9,7 +9,7 @@ Operating system manages memory for all processes
 Goals of Memory Management
 
     * Operating system manages physical resources (DRAM) for one or more processes
-    * Processes use virtual address, which maps to a physical addres
+    * Processes use virtual address, which maps to a physical address
         + Virtual addresses >> Physical addresses
         + Allocate physical memory and arbitrate how it's accessed
             - Allocate - Allocation, replacement
@@ -171,7 +171,7 @@ Segmentation
         + Address == segment selector + offset
     * Segment == continuous physical memory
         + Segment size == segment base + limit registers
-    * Segementation is used with paging; address passed to paging unit to 
+    * Segmentation is used with paging; address passed to paging unit to 
     compute physical address
     * Intel x86 (32 bit) -> Segmentation and paging supported
         + Linux: Up to 8K per process/8K per global process
